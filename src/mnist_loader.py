@@ -3,7 +3,10 @@ import gzip
 import numpy as np
 
 class MnistLoader(object):
-    def load_data_wrapper():
+    def __init__(self):
+        pass
+
+    def load_data_wrapper(self):
         training_data, validation_data, test_data = self.__load_data()
         training_inputs = [np.reshape(x, (784, 1)) for x in training_data[0]]
         training_results = [self.__vectorized_result(y) for y in training_data[1]]
@@ -14,13 +17,13 @@ class MnistLoader(object):
         test_data = zip(test_inputs, test_data[1])
         return (training_data, validation_data, test_data)
 
-    def __load_data():
+    def __load_data(self):
         f= gzip.open('../data/mnist.pkl.gz', 'rb')
         training_data, validation_data, test_data = cPickle.load(f)
         f.close()
         return (training_data, validation_data, test_data)
 
-    def __vectorized_result(j):
+    def __vectorized_result(self, j):
         e = np.zeros((10, 1))
         e[j] = 1.0
         return e
