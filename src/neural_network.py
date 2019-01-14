@@ -23,13 +23,22 @@ class NeuralNetwork(object):
                 for j in xrange(0, number_of_training_examples, batch_size)
             ]
             for batch in batchs:
-                nabla_b = [np.zeros(b.shape) for b in self.biases]
-                nabla_w = [np.zeros(w.shape) for w in self.weights]
-                for training_input, actual_result in batch:
-                    delta_nabla_b, delta_nabla_w = self.backpropagate(training_input, actual_result)
+                self.update_batch(batch, learning_rate)
+                print "Epoch {0} complete".format(j)
 
-    def backpropagae(self, input, actual_result):
 
+    def update_batch(self, batch, learning_rate):
+        nabla_b = [np.zeros(biases.shape) for biases in self.biases]
+        nabla_w = [np.zeros(weights.shape) for weights in self.weights]
+        for training_input, actual_result in batch:
+            delta_nabla_b, delta_naabla_w = self.backpropagate(training_input, actual_result)
+            nable_b = [nabla_b + delta_nabla_b for nabla_b, delta_nabla_b in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nabla_w + delta_nabla_w for nabla_w, delta_nabla_w in zip(nable_w, delta_nabla_w)]
+        self.weights = [weight - (learning_rate/len(batch)) * nabla_w for weight, nabla_w in zip(self.weights, nabla_w)]
+        self.biases = [bias - (learning_rate/len(batch))] * nabla_b for bias, nabla_b in zip(self.biases, nabla_b)]
+
+    def backpropagate(self, input, actual_result):
+        nabla_b = [np.zer]
         return (delta_nabla_b, delta_nable_w)
 
 
