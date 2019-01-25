@@ -10,7 +10,7 @@ class NeuralNetwork(object):
         self.weights = [np.random.randn(y, x) for x, y in self.node_connections]
 
     def stochist_gradient_decent(self, training_examples, learning_rate, batch_size, epochos, test_data=None):
-        if test_data: n_test = len(test_data)
+        if test_data: number_of_tests = len(test_data)
         number_of_training_examples = len(training_examples)
         for i in xrange(epochos):
             random.shuffle(training_examples)
@@ -18,12 +18,14 @@ class NeuralNetwork(object):
                 training_examples[j:j + batch_size]
                 for j in xrange(0, number_of_training_examples, batch_size)
             ]
+            print len(batchs)
             for batch in batchs:
                 self.update_batch(batch, learning_rate)
                 if test_data:
-                    print "Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data), n_test)
+                    accuracy_percentage = float(self.evaluate(test_data))*100/float(number_of_tests)
+                    print "Epoch {0}: {1}%".format(i, accuracy_percentage)
                 else:
-                    print "Epoch {0} complete".format(j)
+                    print "Epoch {0} complete".format(i)
 
 
     def update_batch(self, batch, learning_rate):
@@ -83,7 +85,3 @@ class NeuralNetwork(object):
     def __calc_next_layer_activation(self, inputs, weights, bias):
         value = np.dot(weights, inputs) + bias
         return self.__sigmoid(value)
-
-    def __mean_squared_error(self, y, y_hat):
-        return np.square(np.subtract(y, y_hat)).mean()
-
